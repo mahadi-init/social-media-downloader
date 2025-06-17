@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Download videos from Instagram and YouTube with just one",
     start_url: "/",
     display: "standalone",
-    background_color: "#ffffff",
+    background_color: "#442a8c",
     theme_color: "#000000",
     icons: [
       {
