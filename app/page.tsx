@@ -1,10 +1,13 @@
 "use client";
 
 import type React from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import { useState } from "react";
 
 type Platform = "instagram" | "youtube";
+
+export const dynamic = "force-static";
 
 export default function Home() {
   const [selectedPlatform, setSelectedPlatform] =
@@ -51,7 +54,7 @@ export default function Home() {
         const blob = await res.blob();
         const a = document.createElement("a");
         a.href = window.URL.createObjectURL(blob);
-        a.download = `${selectedPlatform}-video.mp4`;
+        a.download = `video-${uuidv4().slice(0, 4)}.mp4`;
         a.click();
       } else {
         alert("Failed to download video");

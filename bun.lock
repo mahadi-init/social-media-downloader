@@ -9,6 +9,7 @@
         "next": "15.3.3",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
+        "uuid": "^11.1.0",
       },
       "devDependencies": {
         "@eslint/eslintrc": "^3",
@@ -813,6 +814,8 @@
     "unrs-resolver": ["unrs-resolver@1.9.0", "", { "dependencies": { "napi-postinstall": "^0.2.2" }, "optionalDependencies": { "@unrs/resolver-binding-android-arm-eabi": "1.9.0", "@unrs/resolver-binding-android-arm64": "1.9.0", "@unrs/resolver-binding-darwin-arm64": "1.9.0", "@unrs/resolver-binding-darwin-x64": "1.9.0", "@unrs/resolver-binding-freebsd-x64": "1.9.0", "@unrs/resolver-binding-linux-arm-gnueabihf": "1.9.0", "@unrs/resolver-binding-linux-arm-musleabihf": "1.9.0", "@unrs/resolver-binding-linux-arm64-gnu": "1.9.0", "@unrs/resolver-binding-linux-arm64-musl": "1.9.0", "@unrs/resolver-binding-linux-ppc64-gnu": "1.9.0", "@unrs/resolver-binding-linux-riscv64-gnu": "1.9.0", "@unrs/resolver-binding-linux-riscv64-musl": "1.9.0", "@unrs/resolver-binding-linux-s390x-gnu": "1.9.0", "@unrs/resolver-binding-linux-x64-gnu": "1.9.0", "@unrs/resolver-binding-linux-x64-musl": "1.9.0", "@unrs/resolver-binding-wasm32-wasi": "1.9.0", "@unrs/resolver-binding-win32-arm64-msvc": "1.9.0", "@unrs/resolver-binding-win32-ia32-msvc": "1.9.0", "@unrs/resolver-binding-win32-x64-msvc": "1.9.0" } }, "sha512-wqaRu4UnzBD2ABTC1kLfBjAqIDZ5YUTr/MLGa7By47JV1bJDSW7jq/ZSLigB7enLe7ubNaJhtnBXgrc/50cEhg=="],
 
     "uri-js": ["uri-js@4.4.1", "", { "dependencies": { "punycode": "^2.1.0" } }, "sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg=="],
+
+    "uuid": ["uuid@11.1.0", "", { "bin": { "uuid": "dist/esm/bin/uuid" } }, "sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A=="],
 
     "which": ["which@2.0.2", "", { "dependencies": { "isexe": "^2.0.0" }, "bin": { "node-which": "./bin/node-which" } }, "sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA=="],
 
