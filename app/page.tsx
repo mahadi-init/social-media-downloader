@@ -1,103 +1,234 @@
-import Image from "next/image";
+"use client";
+
+import type React from "react";
+
+import { useState } from "react";
+
+type Platform = "instagram" | "youtube";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [selectedPlatform, setSelectedPlatform] =
+    useState<Platform>("instagram");
+  const [url, setUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const platforms = [
+    {
+      id: "instagram" as Platform,
+      name: "Instagram",
+      icon: "📷",
+      gradient: "from-pink-500 via-purple-500 to-indigo-500",
+      placeholder: "https://www.instagram.com/p/...",
+    },
+    // {
+    //   id: "facebook" as Platform,
+    //   name: "Facebook",
+    //   icon: "👥",
+    //   gradient: "from-blue-600 via-blue-500 to-blue-400",
+    //   placeholder: "https://www.facebook.com/watch/...",
+    // },
+    {
+      id: "youtube" as Platform,
+      name: "YouTube",
+      icon: "📺",
+      gradient: "from-red-600 via-red-500 to-red-400",
+      placeholder: "https://www.youtube.com/watch?v=...",
+    },
+  ];
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/download", {
+        method: "POST",
+        body: JSON.stringify({ url, platform: selectedPlatform }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (res.ok) {
+        const blob = await res.blob();
+        const a = document.createElement("a");
+        a.href = window.URL.createObjectURL(blob);
+        a.download = `${selectedPlatform}-video.mp4`;
+        a.click();
+      } else {
+        alert("Failed to download video");
+      }
+    } catch (error) {
+      alert("An error occurred while downloading");
+    }
+
+    setLoading(false);
+  };
+
+  const currentPlatform = platforms.find((p) => p.id === selectedPlatform);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="text-center mb-12 animate-fade-in-up">
+          <h1 className="md:text-6xl text-4xl font-bold mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent animate-gradient-x">
+            📥 Social Video Downloader
+          </h1>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            Download videos from Instagram and YouTube
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Platform Selection */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <h2 className="text-2xl font-semibold text-white text-center mb-6">
+            Choose Platform
+          </h2>
+          <div className="grid grid-cols-2 gap-6">
+            {platforms.map((platform, index) => (
+              <button
+                key={platform.id}
+                onClick={() => {
+                  setSelectedPlatform(platform.id);
+                  setUrl("");
+                }}
+                className={`group relative p-6 rounded-2xl backdrop-blur-lg border transition-all duration-300 transform hover:scale-105 animate-fade-in-up ${
+                  selectedPlatform === platform.id
+                    ? "bg-white/20 border-white/30 shadow-2xl"
+                    : "bg-white/10 border-white/20 hover:bg-white/15"
+                }`}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div
+                  className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${platform.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
+                ></div>
+                <div className="relative z-10 text-center">
+                  <div className="text-4xl mb-2 transform group-hover:scale-110 transition-transform duration-300">
+                    {platform.icon}
+                  </div>
+                  <div className="text-white font-medium">{platform.name}</div>
+                </div>
+                {selectedPlatform === platform.id && (
+                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Download Form */}
+        <div className="max-w-4xl mx-auto">
+          <div className="backdrop-blur-lg bg-white/10 rounded-3xl p-8 border border-white/20 shadow-2xl animate-fade-in-up animation-delay-500">
+            <div className="text-center mb-6">
+              <div
+                className={`inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r ${currentPlatform?.gradient} text-white font-medium mb-4`}
+              >
+                <span className="mr-2 text-xl">{currentPlatform?.icon}</span>
+                {currentPlatform?.name} Downloader
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="relative">
+                <input
+                  type="url"
+                  placeholder={currentPlatform?.placeholder}
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  required
+                  className="w-full px-6 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                />
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className={`w-full py-4 px-8 rounded-2xl font-semibold text-white transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/50 ${
+                  loading
+                    ? "bg-gray-600 cursor-not-allowed"
+                    : `bg-gradient-to-r ${currentPlatform?.gradient} hover:shadow-2xl hover:shadow-purple-500/25`
+                }`}
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
+                    Downloading...
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center">
+                    <span className="mr-2">⬇️</span>
+                    Download Video
+                  </div>
+                )}
+              </button>
+            </form>
+
+            {/* Features */}
+            <div className="mt-8 grid grid-cols-2 gap-4 text-sm text-gray-300">
+              <div className="flex items-center">
+                <span className="mr-2">⚡</span>
+                Fast Download
+              </div>
+              <div className="flex items-center">
+                <span className="mr-2">🔒</span>
+                Secure & Private
+              </div>
+              <div className="flex items-center">
+                <span className="mr-2">📱</span>
+                Mobile Friendly
+              </div>
+              <div className="flex items-center">
+                <span className="mr-2">🆓</span>
+                100% Free
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Instructions */}
+        <div className="max-w-4xl mx-auto mt-12 animate-fade-in-up animation-delay-1000">
+          <div className="backdrop-blur-lg bg-white/5 rounded-2xl p-6 border border-white/10">
+            <h3 className="text-xl font-semibold text-white mb-4 text-center">
+              How to Use
+            </h3>
+            <div className="grid md:grid-cols-4 gap-4 text-center">
+              <div className="space-y-2">
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto text-white font-bold">
+                  1
+                </div>
+                <p className="text-gray-300 text-sm">Select Platform</p>
+              </div>
+              <div className="space-y-2">
+                <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center mx-auto text-white font-bold">
+                  2
+                </div>
+                <p className="text-gray-300 text-sm">Paste Video URL</p>
+              </div>
+              <div className="space-y-2">
+                <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mx-auto text-white font-bold">
+                  3
+                </div>
+                <p className="text-gray-300 text-sm">Click Download</p>
+              </div>
+              <div className="space-y-2">
+                <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-green-500 rounded-full flex items-center justify-center mx-auto text-white font-bold">
+                  4
+                </div>
+                <p className="text-gray-300 text-sm">Enjoy Your Video</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

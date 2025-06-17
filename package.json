@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "btch-downloader": "^4.0.15",
+    "instagram-url-direct": "^2.0.7",
+    "next": "15.3.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.3.3"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "typescript": "^5",
