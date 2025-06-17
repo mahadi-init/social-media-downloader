@@ -14,8 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Social media downloader",
-  description:
-    " Download videos from Instagram, Facebook, and YouTube with just one ",
+  description: "Download videos from Instagram and YouTube with just one",
 };
 
 export default function RootLayout({
