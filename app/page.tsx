@@ -77,7 +77,7 @@ export default function Home() {
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-12 animate-fade-in-up">
-          <h1 className="md:text-6xl text-4xl font-bold mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent animate-gradient-x">
+          <h1 className="md:text-5xl text-[1.7rem] leading-none font-bold mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent animate-gradient-x">
             📥 Social Video Downloader
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
