@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Social media downloader",
-    short_name: "Downloader",
-    description: "Download videos from Instagram and YouTube with just one",
+    name: "Instagram Video Downloader",
+    short_name: "InstaDownload",
+    description: "Download videos from Instagram",
     start_url: "/",
     display: "standalone",
     background_color: "#442a8c",

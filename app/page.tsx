@@ -1,43 +1,22 @@
 "use client";
 
 import type React from "react";
-import { v4 as uuidv4 } from "uuid";
-
 import { useState } from "react";
-
-type Platform = "instagram" | "youtube";
+import { v4 as uuidv4 } from "uuid";
 
 export const dynamic = "force-static";
 
+const instagram = {
+  id: "instagram",
+  name: "Instagram",
+  icon: "📷",
+  gradient: "from-pink-500 via-purple-500 to-indigo-500",
+  placeholder: "https://www.instagram.com/p/...",
+};
+
 export default function Home() {
-  const [selectedPlatform, setSelectedPlatform] =
-    useState<Platform>("instagram");
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const platforms = [
-    {
-      id: "instagram" as Platform,
-      name: "Instagram",
-      icon: "📷",
-      gradient: "from-pink-500 via-purple-500 to-indigo-500",
-      placeholder: "https://www.instagram.com/p/...",
-    },
-    // {
-    //   id: "facebook" as Platform,
-    //   name: "Facebook",
-    //   icon: "👥",
-    //   gradient: "from-blue-600 via-blue-500 to-blue-400",
-    //   placeholder: "https://www.facebook.com/watch/...",
-    // },
-    {
-      id: "youtube" as Platform,
-      name: "YouTube",
-      icon: "📺",
-      gradient: "from-red-600 via-red-500 to-red-400",
-      placeholder: "https://www.youtube.com/watch?v=...",
-    },
-  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +25,7 @@ export default function Home() {
     try {
       const res = await fetch("/api/download", {
         method: "POST",
-        body: JSON.stringify({ url, platform: selectedPlatform }),
+        body: JSON.stringify({ url }),
         headers: { "Content-Type": "application/json" },
       });
 
@@ -66,8 +45,6 @@ export default function Home() {
     setLoading(false);
   };
 
-  const currentPlatform = platforms.find((p) => p.id === selectedPlatform);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
       {/* Animated Background Elements */}
@@ -80,51 +57,12 @@ export default function Home() {
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-12 animate-fade-in-up">
-          <h1 className="md:text-5xl text-[1.7rem] leading-none font-bold mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent animate-gradient-x">
-            📥 Social Video Downloader
+          <h1 className="md:text-3xl text-[1.7rem] leading-none font-bold mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent animate-gradient-x">
+            📥 Instagram Video Downloader
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Download videos from Instagram and YouTube
+            Download videos from Instagram
           </p>
-        </div>
-
-        {/* Platform Selection */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <h2 className="text-2xl font-semibold text-white text-center mb-6">
-            Choose Platform
-          </h2>
-          <div className="grid grid-cols-2 gap-6">
-            {platforms.map((platform, index) => (
-              <button
-                key={platform.id}
-                onClick={() => {
-                  setSelectedPlatform(platform.id);
-                  setUrl("");
-                }}
-                className={`group relative p-6 rounded-2xl backdrop-blur-lg border transition-all duration-300 transform hover:scale-105 animate-fade-in-up ${
-                  selectedPlatform === platform.id
-                    ? "bg-white/20 border-white/30 shadow-2xl"
-                    : "bg-white/10 border-white/20 hover:bg-white/15"
-                }`}
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div
-                  className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${platform.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
-                ></div>
-                <div className="relative z-10 text-center">
-                  <div className="text-4xl mb-2 transform group-hover:scale-110 transition-transform duration-300">
-                    {platform.icon}
-                  </div>
-                  <div className="text-white font-medium">{platform.name}</div>
-                </div>
-                {selectedPlatform === platform.id && (
-                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
-                  </div>
-                )}
-              </button>
-            ))}
-          </div>
         </div>
 
         {/* Download Form */}
@@ -132,10 +70,10 @@ export default function Home() {
           <div className="backdrop-blur-lg bg-white/10 rounded-3xl p-8 border border-white/20 shadow-2xl animate-fade-in-up animation-delay-500">
             <div className="text-center mb-6">
               <div
-                className={`inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r ${currentPlatform?.gradient} text-white font-medium mb-4`}
+                className={`inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r ${instagram?.gradient} text-white font-medium mb-4`}
               >
-                <span className="mr-2 text-xl">{currentPlatform?.icon}</span>
-                {currentPlatform?.name} Downloader
+                <span className="mr-2 text-xl">{instagram?.icon}</span>
+                {instagram?.name} Downloader
               </div>
             </div>
 
@@ -143,7 +81,7 @@ export default function Home() {
               <div className="relative">
                 <input
                   type="url"
-                  placeholder={currentPlatform?.placeholder}
+                  placeholder={instagram?.placeholder}
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   required
@@ -158,7 +96,7 @@ export default function Home() {
                 className={`w-full py-4 px-8 rounded-2xl font-semibold text-white transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/50 ${
                   loading
                     ? "bg-gray-600 cursor-not-allowed"
-                    : `bg-gradient-to-r ${currentPlatform?.gradient} hover:shadow-2xl hover:shadow-purple-500/25`
+                    : `bg-gradient-to-r ${instagram?.gradient} hover:shadow-2xl hover:shadow-purple-500/25`
                 }`}
               >
                 {loading ? (
