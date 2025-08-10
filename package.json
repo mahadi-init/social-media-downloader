@@ -3,15 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/minimatch": "^6.0.0",
     "btch-downloader": "^4.0.15",
     "instagram-url-direct": "^2.0.7",
+    "lucide-react": "^0.539.0",
+    "minimatch": "^10.0.3",
     "next": "15.3.3",
+    "next-pwa": "^5.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "uuid": "^11.1.0"
